@@ -38,15 +38,15 @@ with DAG(
             SELECT c.Customer_Id, c.First_Name, c.Last_Name, SUM(i.Total) AS TotalAmount
             FROM Customer c
             JOIN Invoice i ON c.Customer_Id = i.Customer_Id
-            GROUP BY c.Customer_Id, c.First_Name, c.Last_Name
+            GROUP BY c.Customer_Id
             ORDER BY TotalAmount DESC
             LIMIT 10;
-        """
+        """,
     )
 
     export_task = PythonOperator(
         task_id='export_csv',
-        python_callable=export_to_csv
+        python_callable=export_to_csv,
     )
 
     create_temp_table >> export_task
