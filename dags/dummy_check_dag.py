@@ -1,11 +1,18 @@
-from airflow import DAG
-from airflow.operators.dummy import DummyOperator
-from datetime import datetime, timedelta
+from airflow.decorators import dag, task
+from datetime import datetime
 
-with DAG(
-    dag_id='dummy_check_dag_samyuktha', # A new, unique DAG ID
-    start_date=datetime(2023, 1, 1), # A static start date in the past
-    schedule_interval=None, # Set to None for manual trigger
+@task
+def hello_world():
+    print("Hello World")
+
+@dag(
+    dag_id='hello_world',
+    start_date=datetime(2023, 1, 1),
+    schedule='@daily',
     catchup=False,
-) as dag:
-    DummyOperator(task_id="start")
+    default_args={'owner': 'airflow', 'retries': 1},
+)
+def hello_world_dag():
+    hello_world_task = hello_world()
+
+hello_world_dag()
