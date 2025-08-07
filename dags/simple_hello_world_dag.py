@@ -14,3 +14,4 @@ with DAG(
         task_id='say_hello',
         bash_command='echo "Hello from Samyuktha\'s simple DAG!"',
     )
+dag = dag
